@@ -1,6 +1,7 @@
-<div *ngIf="isLoggedIn()">
+<div>
   <h1>Name: {{ userInfo?.info?.name }}</h1>
   <h1>Email: {{ userInfo?.info?.email }}</h1>
   <img src="{{userInfo?.info?.picture}}" alt="">
+  <button (click)="login()">Login</button>
   <button (click)="logout()">Logout</button>
 </div>

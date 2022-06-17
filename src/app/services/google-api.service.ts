@@ -24,20 +24,10 @@ export interface UserInfo {
 export class GoogleApiService {
 
   userProfileSubject = new Subject<UserInfo>();
+
   constructor(private readonly oAuthService: OAuthService) {
     oAuthService.configure(oAuthConfig);
-    oAuthService.logoutUrl = 'https://www.google.com/accounts/Logout' 
-    oAuthService.loadDiscoveryDocument().then(() => {
-      oAuthService.tryLogin().then(() => {
-        if(!oAuthService.hasValidAccessToken()) {
-          oAuthService.initLoginFlow()
-        } else {
-          oAuthService.loadUserProfile().then((userProfile) => {
-            this.userProfileSubject.next(userProfile as UserInfo)
-          })
-        }
-      })
-    })
+    oAuthService.logoutUrl = 'https://www.google.com/accounts/Logout'
   }
 
   isLoggedIn(): boolean {
@@ -46,5 +36,19 @@ export class GoogleApiService {
 
   signOut() {
     this.oAuthService.logOut();
+  }
+
+  login() {
+    this.oAuthService.loadDiscoveryDocument().then(() => {
+      this.oAuthService.tryLogin().then(() => {
+        if(!this.oAuthService.hasValidAccessToken()) {
+          this.oAuthService.initLoginFlow()
+        } else {
+          this.oAuthService.loadUserProfile().then((userProfile) => {
+            this.userProfileSubject.next(userProfile as UserInfo)
+          })
+        }
+      })
+    })
   }
 }

@@ -21,4 +21,8 @@ export class AppComponent {
   logout() {
     this.google.signOut();
   }
+
+  login() {
+    this.google.login();
+  }
 }
